@@ -82,6 +82,6 @@ if __name__ == "__main__":
     df_normalized = data_transformation(df, columns_info)
 
     size_of_trainning = round(df_normalized.shape[0] * 0.8)
-    df_train_input, df_test_input = df_normalized.iloc[:size_of_trainning], df_normalized.iloc[size_of_trainning:]
-    df_train_input.to_csv('dataset/dataset_normalized/train_output_normalized.csv', index=False)
-    df_test_input.to_csv('dataset/dataset_normalized/test_output_normalized.csv', index=False)
+    df_train_output, df_test_output = df_normalized.iloc[:size_of_trainning], df_normalized.iloc[size_of_trainning:]
+    df_train_output.to_csv('dataset/dataset_normalized/train_output_normalized.csv', index=False)
+    df_test_output.to_csv('dataset/dataset_normalized/test_output_normalized.csv', index=False)
