@@ -5,7 +5,7 @@ def get_data_info(file_path):
     # Read the CSV file
     return pd.read_csv(file_path)
 
-def get_columns_info(df):
+def get_columns_info(df, path_to_save):
     n = df.shape[1]
 
     data = {
@@ -21,7 +21,7 @@ def get_columns_info(df):
         unique = df[df.columns[i]].unique().tolist()
         unique_normalized = []
         if dtype == 'int64' or dtype == 'float64':
-            unique_normalized = [x / max(unique) for x in unique]
+            unique_normalized = [max(unique)]
         else:
             for j in range(len(unique)):
                 unique_normalized.append(j/(len(unique) - 1))
@@ -35,11 +35,14 @@ def get_columns_info(df):
         }
         data['columns_info'].append(column_data)
 
-    with open('ann/columns_info/Y_columns_info.json', 'w') as file:
+    with open(path_to_save, 'w') as file:
         json.dump(data, file, indent=4)
 
 
 if __name__ == "__main__":
     csv_file_path = 'dataset/train_output_DzPxaPY.csv'
     df  = get_data_info(csv_file_path)
-    get_columns_info(df)
+    get_columns_info(df, 'ann/columns_info/Y_columns_info.json')
+    csv_file_path = 'dataset/train_input_Z61KlZo.csv'
+    df  = get_data_info(csv_file_path)
+    get_columns_info(df, 'ann/columns_info/X_columns_info.json')
