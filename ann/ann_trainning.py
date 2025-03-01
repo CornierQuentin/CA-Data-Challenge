@@ -42,6 +42,18 @@ def train_model(model, criterion, optimizer, train_loader, num_epochs, checkpoin
             torch.save(model.state_dict(), checkpoint_path)
             print("Model weights saved!")
 
+def evaluate_model(model, criterion, test_loader):
+    model.eval()
+    running_loss = 0.0
+    with torch.no_grad():
+        for inputs, labels in test_loader:
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            running_loss += loss.item()
+    
+    avg_loss = running_loss / len(test_loader)
+    print(f"Test Loss: {avg_loss:.4f}")
+
 def load_data(train_input_path, train_output_path, test_input_path, test_output_path, batch_size):
     # Load the CSV files
     train_input = pd.read_csv(train_input_path).values
@@ -89,3 +101,6 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 # Train the model
 train_model(model, criterion, optimizer, train_loader, num_epochs, checkpoint_path)
+
+# Evaluate the model
+evaluate_model(model, criterion, test_loader)
