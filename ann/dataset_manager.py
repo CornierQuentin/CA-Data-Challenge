@@ -59,9 +59,15 @@ def data_transformation(df, columns_info):
         for row in range(number_of_rows):
             value = df_normalized.iloc[row, column]
             column_info = columns_info[column]
-            index = column_info['unique_values'].index(value)
-            normalized_value = column_info['unique_values_normalized'][index]
-            df_normalized.iloc[row, column] = normalized_value
+            dtype = column_info['data_type']
+            if dtype == 'int64' or dtype == 'float64':
+                max_value = column_info['unique_values'][0]
+                normalized_value = value / max_value
+                df_normalized.iloc[row, column] = normalized_value
+            else:
+                index = column_info['unique_values'].index(value)
+                normalized_value = column_info['unique_values_normalized'][index]
+                df_normalized.iloc[row, column] = normalized_value
     
     return df_normalized
 
